@@ -2,7 +2,7 @@ package com.link.blog.constant;
 
 /**
  * @author LiuWenqi
- * @Description
+ * @Description 通用常量
  * @date 2024-06-16 16:23
  */
 public class CommonConstant {

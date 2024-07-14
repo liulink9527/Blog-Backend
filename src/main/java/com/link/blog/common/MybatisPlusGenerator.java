@@ -17,7 +17,7 @@ import java.util.List;
 
 /**
  * @author LiuWenqi
- * @Description
+ * @Description 代码生成器
  * @date 2024-06-23 15:11
  */
 public class MybatisPlusGenerator {

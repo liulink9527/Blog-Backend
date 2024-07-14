@@ -15,7 +15,7 @@ import java.util.Collections;
 
 /**
  * @author LiuWenqi
- * @Description
+ * @Description Knife4j 配置
  * @date 2024-06-16 19:14
  */
 @Configuration

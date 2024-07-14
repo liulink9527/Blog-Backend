@@ -6,7 +6,7 @@ import lombok.Data;
 
 /**
  * @author LiuWenqi
- * @Description
+ * @Description 统一返回结果
  * @date 2024-06-15 17:57
  */
 @Data
@@ -35,5 +35,25 @@ public class Result<T> {
 
     public static <T> Result<T> ok(T data, String message) {
         return new Result<>(StatusCodeEnum.SUCCESS.getCode(), message, data);
+    }
+
+    public static <T> Result<T> fail() {
+        return new Result<>(StatusCodeEnum.FAIL.getCode(), StatusCodeEnum.FAIL.getMessage(), null);
+    }
+
+    public static <T> Result<T> fail(StatusCodeEnum statusCodeEnum) {
+        return new Result<>(statusCodeEnum.getCode(), statusCodeEnum.getMessage(), null);
+    }
+
+    public static <T> Result<T> fail(T data) {
+        return new Result<>(StatusCodeEnum.FAIL.getCode(), StatusCodeEnum.FAIL.getMessage(), data);
+    }
+
+    public static <T> Result<T> fail(T data, String message) {
+        return new Result<>(StatusCodeEnum.FAIL.getCode(), message, data);
+    }
+
+    public static <T> Result<T> fail(Integer code, String message) {
+        return new Result<>(code, message, null);
     }
 }

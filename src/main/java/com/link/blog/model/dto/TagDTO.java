@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 
 /**
  * @author LiuWenqi
- * @Description
+ * @Description 文章标签DTO
  * @date 2024-06-25 20:08
  */
 @Data

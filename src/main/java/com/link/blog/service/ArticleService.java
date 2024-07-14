@@ -3,6 +3,7 @@ package com.link.blog.service;
 import com.link.blog.common.PageResult;
 import com.link.blog.entity.Article;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.link.blog.model.dto.ArticleUploadDTO;
 import com.link.blog.model.request.ConditionRequest;
 import com.link.blog.model.vo.ArticleBackVO;
 
@@ -22,4 +23,10 @@ public interface ArticleService extends IService<Article> {
      * @return
      */
     PageResult<ArticleBackVO> listArticleBack(ConditionRequest request);
+
+    /**
+     * 添加或修改文章
+     * @param articleUploadDTO
+     */
+    void saveOrUpdateArticle(ArticleUploadDTO articleUploadDTO);
 }

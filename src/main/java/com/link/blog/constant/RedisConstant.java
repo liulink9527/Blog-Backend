@@ -2,7 +2,7 @@ package com.link.blog.constant;
 
 /**
  * @author LiuWenqi
- * @Description
+ * @Description Redis常量
  * @date 2024-06-23 14:13
  */
 public class RedisConstant {

@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author LiuWenqi
- * @Description
+ * @Description 文章排名DTO
  * @date 2024-06-25 21:11
  */
 @Data

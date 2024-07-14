@@ -79,7 +79,7 @@ public class Article {
     /**
      * 状态值 1公开 2私密 3评论可见
      */
-    private Boolean status;
+    private Integer status;
 
     /**
      * 发表时间

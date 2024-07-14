@@ -4,10 +4,12 @@ import com.link.blog.common.PageResult;
 import com.link.blog.constant.RedisConstant;
 import com.link.blog.entity.Article;
 import com.link.blog.dao.ArticleDao;
+import com.link.blog.model.dto.ArticleUploadDTO;
 import com.link.blog.model.request.ConditionRequest;
 import com.link.blog.model.vo.ArticleBackVO;
 import com.link.blog.service.ArticleService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.link.blog.service.BlogInfoService;
 import com.link.blog.service.RedisService;
 import com.link.blog.util.PageUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * <p>
@@ -33,6 +36,9 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleDao, Article> impleme
 
     @Autowired
     private RedisService redisService;
+
+    @Autowired
+    private BlogInfoService blogInfoService;
 
     @Override
     public PageResult<ArticleBackVO> listArticleBack(ConditionRequest request) {
@@ -55,5 +61,11 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleDao, Article> impleme
             item.setLikeCount((Integer) likesCountMap.get(item.getId().toString()));
         });
         return new PageResult<>(articleBackVOList, count);
+    }
+
+    @Override
+    public void saveOrUpdateArticle(ArticleUploadDTO articleUploadDTO) {
+        // 查询博客配置信息
+//        CompletableFuture.supplyAsync(() -> )
     }
 }

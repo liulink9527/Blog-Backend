@@ -3,7 +3,19 @@
 <mapper namespace="com.link.blog.dao.ArticleDao">
 
     <resultMap id="articleBackResultMap" type="com.link.blog.model.vo.ArticleBackVO">
-
+        <id column="id" property="id" />
+        <result column="article_cover" property="articleCover"/>
+        <result column="article_title" property="articleTitle"/>
+        <result column="create_time" property="createTime"/>
+        <result column="type" property="type"/>
+        <result column="is_top" property="isTop"/>
+        <result column="is_delete" property="isDelete"/>
+        <result column="status" property="status"/>
+        <result column="category_name" property="categoryName"/>
+        <collection property="tagDTOList" ofType="com.link.blog.model.dto.TagDTO">
+            <id column="tag_id" property="id"/>
+            <result column="tag_name" property="tagName"/>
+        </collection>
     </resultMap>
 
 
@@ -40,8 +52,8 @@
         </where>
     </select>
 
-    <select id="listArticleBack" resultType="articleBackResultMap">
-        select
+    <select id="listArticleBack" resultMap="articleBackResultMap">
+        SELECT
         a.id,
         article_cover,
         article_title,
@@ -53,38 +65,56 @@
         category_name,
         t.id AS tag_id,
         t.tag_name
-        from
+        FROM
         (
-        select id, article_cover, article_title, `type`, is_top, is_delete, status, create_time, category_id
-        from tb_article
+        SELECT
+        id,
+        article_cover,
+        article_title,
+        type,
+        is_top,
+        is_delete,
+        status,
+        create_time,
+        category_id
+        FROM
+        tb_article
         <where>
             is_delete = #{condition.isDelete}
             <if test="condition.keywords != null">
-                and article_title like concat('%', #{condition.keywords}, '%')
+                and article_title like concat('%',#{condition.keywords},'%')
             </if>
             <if test="condition.status != null">
-                and `status` = #{condition.status}
-            </if>
-            <if test="condition.type != null">
-                and `type` = #{condition.type}
+                and status = #{condition.status}
             </if>
             <if test="condition.categoryId != null">
                 and category_id = #{condition.categoryId}
             </if>
+            <if test="condition.type != null">
+                and type = #{condition.type}
+            </if>
             <if test="condition.tagId != null">
-                and id in (select article_id from tb_article_tag where tag_id = #{condition.tagId})
+                and id in
+                (
+                SELECT
+                article_id
+                FROM
+                tb_article_tag
+                WHERE
+                tag_id = #{condition.tagId}
+                )
             </if>
         </where>
-        order by
-        is_top desc,
-        id desc
-        limit #{current}, #{size}
+        ORDER BY
+        is_top DESC,
+        id DESC
+        LIMIT #{current},#{size}
         ) a
-        left join tb_category c on a.category_id = c.id
-        left join tb_article_tag tat on a.id = tat.article_id
-        left join tb_tag t on t.id = tat.tag_id
-        order by
-        is_top desc,
-        a.id desc
+        LEFT JOIN tb_category c ON a.category_id = c.id
+        LEFT JOIN tb_article_tag atg ON a.id = atg.article_id
+        LEFT JOIN tb_tag t ON t.id = atg.tag_id
+        ORDER BY
+        is_top DESC,
+        a.id DESC
     </select>
 </mapper>

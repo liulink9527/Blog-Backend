@@ -14,16 +14,19 @@ public enum StatusCodeEnum {
     /**
      * 成功
      */
-    SUCCESS(200, "成功"),
+    SUCCESS(20000, "成功"),
     /**
      * 系统异常
      */
-    SYSTEM_ERROR(500, "系统异常"),
+    SYSTEM_ERROR(50000, "系统异常"),
     /**
      * 操作失败
      */
-    FAIL(501, "操作失败");
-
+    FAIL(51000, "操作失败"),
+    /**
+     * 非法参数错误
+     */
+    VALID_PARAMETER_ERROR(52000, "非法参数错误");
 
 
     /**
