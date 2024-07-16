@@ -2,10 +2,10 @@ package com.link.blog.model.dto;
 
 /**
  * @author LiuWenqi
- * @Description 文件urlDTO
+ * @Description 附件DTO
  * @date 2024-07-13 21:01
  */
-public class FileUrlDTO {
+public class FileAttachDTO {
 
     /**
      * 文件名

@@ -4,35 +4,21 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3f1b0856-ce15-44a8-b20e-5e78b14a3e10" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/link/blog/enums/ArticleStatusEnum.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/link/blog/enums/MarkdownTypeEnum.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/link/blog/exception/BizException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/link/blog/handler/GlobalExceptionHandler.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/link/blog/model/dto/ArticleUploadDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/link/blog/model/dto/FileUrlDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/link/blog/strategy/ArticleImportStrategy.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/link/blog/strategy/impl/NormalArticleImportStrategyImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+    <list default="true" id="3f1b0856-ce15-44a8-b20e-5e78b14a3e10" name="Changes" comment="a">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/link/blog/model/dto/WebsiteConfigDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/link/blog/util/CommonUtils.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/link/blog/assembler/UserMenuAssembler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/link/blog/assembler/UserMenuAssembler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/link/blog/common/MybatisPlusGenerator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/link/blog/common/MybatisPlusGenerator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/link/blog/common/Result.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/link/blog/common/Result.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/link/blog/config/Knife4jConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/link/blog/config/Knife4jConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/link/blog/config/RedisConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/link/blog/config/RedisConfig.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/link/blog/constant/CommonConstant.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/link/blog/constant/CommonConstant.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/link/blog/constant/RedisConstant.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/link/blog/constant/RedisConstant.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/link/blog/controller/ArticleController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/link/blog/controller/ArticleController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/link/blog/entity/Article.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/link/blog/entity/Article.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/link/blog/enums/StatusCodeEnum.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/link/blog/enums/StatusCodeEnum.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/link/blog/model/dto/ArticleRankDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/link/blog/model/dto/ArticleRankDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/link/blog/model/dto/CategoryDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/link/blog/model/dto/CategoryDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/link/blog/model/dto/TagDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/link/blog/model/dto/TagDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/link/blog/model/vo/ArticleBackVO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/link/blog/model/vo/ArticleBackVO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/link/blog/service/ArticleService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/link/blog/service/ArticleService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/link/blog/model/dto/ArticleUploadDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/link/blog/model/dto/ArticleUploadDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/link/blog/model/dto/FileUrlDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/link/blog/model/dto/FileAttachDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/link/blog/service/BlogInfoService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/link/blog/service/BlogInfoService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/link/blog/service/impl/ArticleServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/link/blog/service/impl/ArticleServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/mapper/ArticleDao.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/mapper/ArticleDao.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/link/blog/service/impl/BlogInfoServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/link/blog/service/impl/BlogInfoServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/link/blog/RedisTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/link/blog/RedisTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -105,7 +91,7 @@
       <recent name="com.link.blog" />
     </key>
   </component>
-  <component name="RunManager" selected="Spring Boot.MyBlogApplication">
+  <component name="RunManager" selected="JUnit.RedisTest.minioTest">
     <configuration name="MybatisPlusGenerator" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.link.blog.common.MybatisPlusGenerator" />
       <module name="my-blog-backend" />
@@ -130,6 +116,22 @@
       <option name="PACKAGE_NAME" value="com.link.blog" />
       <option name="MAIN_CLASS_NAME" value="com.link.blog.RedisTest" />
       <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="RedisTest.minioTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="my-blog-backend" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.link.blog.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.link.blog" />
+      <option name="MAIN_CLASS_NAME" value="com.link.blog.RedisTest" />
+      <option name="METHOD_NAME" value="minioTest" />
+      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -165,9 +167,10 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Spring Boot.MyBlogApplication" />
-        <item itemvalue="Application.MybatisPlusGenerator" />
+        <item itemvalue="JUnit.RedisTest.minioTest" />
         <item itemvalue="JUnit.RedisTest.test" />
+        <item itemvalue="Application.MybatisPlusGenerator" />
+        <item itemvalue="Spring Boot.MyBlogApplication" />
         <item itemvalue="JUnit.RedisTest" />
       </list>
     </recent_temporary>
@@ -203,8 +206,18 @@
       <workItem from="1720615142899" duration="2164000" />
       <workItem from="1720701276811" duration="5197000" />
       <workItem from="1720850973113" duration="3513000" />
-      <workItem from="1720930947526" duration="933000" />
+      <workItem from="1720930947526" duration="8185000" />
+      <workItem from="1721133846609" duration="4936000" />
     </task>
+    <task id="LOCAL-00001" summary="a">
+      <option name="closed" value="true" />
+      <created>1720932684409</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1720932684409</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -220,5 +233,9 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="a" />
+    <option name="LAST_COMMIT_MESSAGE" value="a" />
   </component>
 </project>

@@ -45,4 +45,9 @@ public class CommonConstant {
      */
     public static final String DEFAULT_SIZE = "10";
 
+    /**
+     * 默认的配置id
+     */
+    public static final Integer DEFAULT_CONFIG_ID = 1;
+
 }

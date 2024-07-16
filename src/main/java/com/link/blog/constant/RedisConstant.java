@@ -37,4 +37,9 @@ public class RedisConstant {
      */
     public static final String USER_AREA = "user_area";
 
+    /**
+     * 网站配置
+     */
+    public static final String WEBSITE_CONFIG = "website_config";
+
 }

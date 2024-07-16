@@ -49,9 +49,9 @@ public class ArticleUploadDTO {
     private List<String> tagNameList;
 
     /**
-     * 文章URL
+     * 附件
      */
-    private List<FileUrlDTO> fileAttach;
+    private List<FileAttachDTO> fileAttach;
 
     /**
      * 文章类型

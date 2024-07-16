@@ -3,11 +3,14 @@ package com.link.blog.service.impl;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
 import cn.hutool.core.collection.CollectionUtil;
+import com.alibaba.fastjson2.JSON;
+import com.alibaba.fastjson2.TypeReference;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.link.blog.constant.CommonConstant;
 import com.link.blog.constant.RedisConstant;
 import com.link.blog.dao.*;
 import com.link.blog.entity.Tag;
+import com.link.blog.entity.WebsiteConfig;
 import com.link.blog.manager.ArticleManager;
 import com.link.blog.manager.UniqueViewManager;
 import com.link.blog.model.dto.*;
@@ -58,6 +61,9 @@ public class BlogInfoServiceImpl implements BlogInfoService {
 
     @Autowired
     private CategoryDao categoryDao;
+
+    @Autowired
+    private WebsiteConfigDao websiteConfigDao;
 
     @Autowired
     private TagDao tagDao;
@@ -131,6 +137,22 @@ public class BlogInfoServiceImpl implements BlogInfoService {
             // 保存当前访客标识
             redisService.sAdd(RedisConstant.UNIQUE_VISITOR, md5);
         }
+    }
+
+    @Override
+    public WebsiteConfigDTO getWebsiteConfig() {
+        WebsiteConfigDTO websiteConfigDTO;
+        // 获取缓存数据
+        Object websiteConfig = redisService.get(RedisConstant.WEBSITE_CONFIG);
+        if (Objects.nonNull(websiteConfig)) {
+            websiteConfigDTO = JSON.parseObject(websiteConfig.toString(), WebsiteConfigDTO.class);
+        } else {
+            // 从数据库中加载
+            String config = websiteConfigDao.selectById(CommonConstant.DEFAULT_CONFIG_ID).getConfig();
+            websiteConfigDTO = JSON.parseObject(config, WebsiteConfigDTO.class);
+            redisService.set(RedisConstant.WEBSITE_CONFIG, config);
+        }
+        return websiteConfigDTO;
     }
 
     private List<ArticleRankDTO> convertList(Map<Object, Double> articleViewsMap) {

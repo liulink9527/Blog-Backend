@@ -67,6 +67,11 @@ public class Article {
     private String originalUrl;
 
     /**
+     * 文章附件
+     */
+    private String fileAttach;
+
+    /**
      * 是否置顶 0否 1是
      */
     private Integer isTop;

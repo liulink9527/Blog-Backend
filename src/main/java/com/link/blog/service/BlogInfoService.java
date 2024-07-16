@@ -1,6 +1,7 @@
 package com.link.blog.service;
 
 
+import com.link.blog.model.dto.WebsiteConfigDTO;
 import com.link.blog.model.vo.BlogBackInfoVO;
 
 import javax.servlet.http.HttpServletRequest;
@@ -23,4 +24,10 @@ public interface BlogInfoService {
      * @param request
      */
     void report(HttpServletRequest request);
+
+    /**
+     * 获取网站配置
+     * @return
+     */
+    WebsiteConfigDTO getWebsiteConfig();
 }
