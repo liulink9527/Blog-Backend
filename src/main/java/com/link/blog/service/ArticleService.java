@@ -4,8 +4,10 @@ import com.link.blog.common.PageResult;
 import com.link.blog.entity.Article;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.link.blog.model.dto.ArticleUploadDTO;
+import com.link.blog.model.request.ArticleTopRequest;
 import com.link.blog.model.request.ConditionRequest;
 import com.link.blog.model.vo.ArticleBackVO;
+import io.minio.messages.DeleteRequest;
 
 /**
  * <p>
@@ -29,4 +31,16 @@ public interface ArticleService extends IService<Article> {
      * @param articleUploadDTO
      */
     void saveOrUpdateArticle(ArticleUploadDTO articleUploadDTO);
+
+    /**
+     * 修改文章置顶
+     * @param articleTopRequest
+     */
+    void updateArticleTop(ArticleTopRequest articleTopRequest);
+
+    /**
+     * 恢复或删除文章
+     * @param deleteRequest
+     */
+    void updateArticleDelete(DeleteRequest deleteRequest);
 }

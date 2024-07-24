@@ -69,12 +69,12 @@ public class RedisTest {
 
         try {
             System.out.println(minioClient.bucketExists(BucketExistsArgs.builder().bucket(bucketName).build()));
-            minioClient.uploadObject(UploadObjectArgs.builder()
-                    .bucket(bucketName)
-                    .object(objectName)
-                    .filename(filePath)
-                    .build()
-            );
+//            minioClient.uploadObject(UploadObjectArgs.builder()
+//                    .bucket(bucketName)
+//                    .object(objectName)
+//                    .filename(filePath)
+//                    .build()
+//            );
 
             System.out.println(minioClient.getPresignedObjectUrl(GetPresignedObjectUrlArgs.builder()
                     .bucket("test")

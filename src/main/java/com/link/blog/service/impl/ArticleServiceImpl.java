@@ -1,37 +1,41 @@
 package com.link.blog.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.json.JSONArray;
+import cn.hutool.core.collection.CollectionUtil;
 import com.alibaba.fastjson2.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.github.xiaoymin.knife4j.core.util.CommonUtils;
 import com.link.blog.common.PageResult;
 import com.link.blog.constant.RedisConstant;
+import com.link.blog.dao.ArticleTagDao;
 import com.link.blog.dao.CategoryDao;
 import com.link.blog.entity.Article;
 import com.link.blog.dao.ArticleDao;
+import com.link.blog.entity.ArticleTag;
 import com.link.blog.entity.Category;
+import com.link.blog.entity.Tag;
 import com.link.blog.enums.ArticleStatusEnum;
 import com.link.blog.exception.BizException;
 import com.link.blog.model.dto.ArticleUploadDTO;
 import com.link.blog.model.dto.FileAttachDTO;
 import com.link.blog.model.dto.WebsiteConfigDTO;
+import com.link.blog.model.request.ArticleTopRequest;
 import com.link.blog.model.request.ConditionRequest;
 import com.link.blog.model.vo.ArticleBackVO;
-import com.link.blog.service.ArticleService;
+import com.link.blog.service.*;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.link.blog.service.BlogInfoService;
-import com.link.blog.service.RedisService;
+import com.link.blog.util.CommonUtils;
 import com.link.blog.util.PageUtils;
 import com.link.blog.util.StringUtils;
+import io.minio.messages.DeleteRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -54,7 +58,16 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleDao, Article> impleme
     private BlogInfoService blogInfoService;
 
     @Autowired
+    private ArticleTagService articleTagService;
+
+    @Autowired
+    private TagService tagService;
+
+    @Autowired
     private CategoryDao categoryDao;
+
+    @Autowired
+    private ArticleTagDao articleTagDao;
 
     @Override
     public PageResult<ArticleBackVO> listArticleBack(ConditionRequest request) {
@@ -79,6 +92,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleDao, Article> impleme
         return new PageResult<>(articleBackVOList, count);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void saveOrUpdateArticle(ArticleUploadDTO articleUploadDTO) {
         // 查询博客配置信息
@@ -98,16 +112,67 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleDao, Article> impleme
         // 设定默认文章封面
         if (StringUtils.isEmpty(article.getArticleCover())) {
             try {
-//                article.setArticleCover(webConfig.get().getArticleCover() + "&time=" + CommonUtils.);
+                article.setArticleCover(webConfig.get().getArticleCover());
             } catch (Exception e) {
                 log.error(e.getMessage(), e);
                 throw new BizException("设定文章封面失败");
             }
         }
+        article.setUserId(1);
+        this.saveOrUpdate(article);
+        // 保存文章标签
+        saveArticleTag(articleUploadDTO, article.getId());
+    }
 
+    @Override
+    public void updateArticleTop(ArticleTopRequest articleTopRequest) {
+        Article article = Article.builder().id(articleTopRequest.getId()).isTop(articleTopRequest.getIsTop()).build();
+        articleDao.updateById(article);
+    }
+
+    @Override
+    public void updateArticleDelete(DeleteRequest deleteRequest) {
 
     }
 
+    /**
+     * 保存文章标签
+     * @param articleUploadDTO
+     * @param articleId
+     */
+    private void saveArticleTag(ArticleUploadDTO articleUploadDTO, Integer articleId) {
+        // 编辑文章则删除文章所有标签
+        if (Objects.nonNull(articleUploadDTO.getId())) {
+            articleTagDao.delete(new LambdaQueryWrapper<ArticleTag>().eq(ArticleTag::getArticleId, articleUploadDTO.getId()));
+        }
+        // 添加文章标签
+        List<String> tagNameList = articleUploadDTO.getTagNameList();
+        if (CollectionUtil.isNotEmpty(tagNameList)) {
+            // 查询已存在的标签
+            List<Tag> existTagList = tagService.list(new LambdaQueryWrapper<Tag>().in(Tag::getTagName, tagNameList));
+            List<String> existTagNameList = existTagList.stream().map(Tag::getTagName).collect(Collectors.toList());
+            List<Integer> existTagIdList = existTagList.stream().map(Tag::getId).collect(Collectors.toList());
+            // 对比新增的不存在的标签
+            tagNameList.removeAll(existTagNameList);
+            if (CollectionUtil.isNotEmpty(tagNameList)) {
+                List<Tag> tagList = tagNameList.stream().map(item -> Tag.builder().tagName(item).build()).collect(Collectors.toList());
+                tagService.saveBatch(tagList);
+                List<Integer> tagIdList = tagList.stream().map(Tag::getId).collect(Collectors.toList());
+                existTagIdList.addAll(tagIdList);
+            }
+            // 提取标签id绑定文章
+            List<ArticleTag> articleTagList = existTagIdList.stream().map(item -> ArticleTag.builder()
+                            .articleId(articleId)
+                            .tagId(item)
+                            .build())
+                    .collect(Collectors.toList());
+            articleTagService.saveBatch(articleTagList);
+        }
+    }
+
+    /**
+     * 保存文章分类名称
+     */
     private Category saveArticleCategory(ArticleUploadDTO articleUploadDTO) {
         // 判断分类是否存在
         Category category = categoryDao.selectOne(new LambdaQueryWrapper<Category>().eq(Category::getCategoryName, articleUploadDTO.getCategoryName()));

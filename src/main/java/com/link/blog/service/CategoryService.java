@@ -2,6 +2,10 @@ package com.link.blog.service;
 
 import com.link.blog.entity.Category;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.link.blog.model.request.ConditionRequest;
+import com.link.blog.model.vo.CategoryOptionVO;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,4 +17,10 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface CategoryService extends IService<Category> {
 
+    /**
+     * 搜索栏文章分类选项
+     * @param request
+     * @return
+     */
+    List<CategoryOptionVO> listCategoryesOption(ConditionRequest request);
 }
