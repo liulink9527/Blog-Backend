@@ -6,8 +6,8 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.link.blog.model.dto.ArticleUploadDTO;
 import com.link.blog.model.request.ArticleTopRequest;
 import com.link.blog.model.request.ConditionRequest;
+import com.link.blog.model.request.DeleteRequest;
 import com.link.blog.model.vo.ArticleBackVO;
-import io.minio.messages.DeleteRequest;
 
 /**
  * <p>

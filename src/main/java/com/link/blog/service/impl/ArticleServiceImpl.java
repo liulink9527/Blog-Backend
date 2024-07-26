@@ -5,6 +5,7 @@ import cn.hutool.core.collection.CollectionUtil;
 import com.alibaba.fastjson2.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.link.blog.common.PageResult;
+import com.link.blog.constant.CommonConstant;
 import com.link.blog.constant.RedisConstant;
 import com.link.blog.dao.ArticleTagDao;
 import com.link.blog.dao.CategoryDao;
@@ -20,13 +21,12 @@ import com.link.blog.model.dto.FileAttachDTO;
 import com.link.blog.model.dto.WebsiteConfigDTO;
 import com.link.blog.model.request.ArticleTopRequest;
 import com.link.blog.model.request.ConditionRequest;
+import com.link.blog.model.request.DeleteRequest;
 import com.link.blog.model.vo.ArticleBackVO;
 import com.link.blog.service.*;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.link.blog.util.CommonUtils;
 import com.link.blog.util.PageUtils;
 import com.link.blog.util.StringUtils;
-import io.minio.messages.DeleteRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -132,7 +132,15 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleDao, Article> impleme
 
     @Override
     public void updateArticleDelete(DeleteRequest deleteRequest) {
-
+        // 修改文章逻辑删除状态
+        List<Article> articleList = deleteRequest.getIdList().stream()
+                .map(id -> Article.builder()
+                        .id(id)
+                        .isTop(CommonConstant.False)
+                        .isDelete(deleteRequest.getIsDelete())
+                        .build())
+                .collect(Collectors.toList());
+        this.updateBatchById(articleList);
     }
 
     /**

@@ -7,9 +7,9 @@ import com.link.blog.constant.OptTypeConstant;
 import com.link.blog.context.ArticleImportStrategyContext;
 import com.link.blog.model.request.ArticleTopRequest;
 import com.link.blog.model.request.ConditionRequest;
+import com.link.blog.model.request.DeleteRequest;
 import com.link.blog.model.vo.ArticleBackVO;
 import com.link.blog.service.ArticleService;
-import io.minio.messages.DeleteRequest;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,9 +55,10 @@ public class ArticleController {
         return Result.ok();
     }
 
+    @OptLog(optType = OptTypeConstant.UPDATE)
     @ApiOperation(value = "恢复或删除文章")
     @PutMapping("/admin/articles")
-    public Result updateArticleDelete(DeleteRequest deleteRequest) {
+    public Result updateArticleDelete(@Valid @RequestBody DeleteRequest deleteRequest) {
         articleService.updateArticleDelete(deleteRequest);
         return Result.ok();
     }

@@ -1,8 +1,10 @@
 package com.link.blog.aspect;
 
+import com.alibaba.fastjson2.JSON;
 import com.link.blog.annotation.OptLog;
 import com.link.blog.dao.OperationLogDao;
 import com.link.blog.entity.OperationLog;
+import com.link.blog.util.IpUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.aspectj.lang.JoinPoint;
@@ -52,8 +54,37 @@ public class OptLogAspect {
         Api api = (Api) signature.getDeclaringType().getAnnotation(Api.class);
         ApiOperation apiOperation = method.getAnnotation(ApiOperation.class);
         OptLog optLog = method.getAnnotation(OptLog.class);
-        
-
+        // 操作模块
+        operationLog.setOptModule(api.value());
+        // 操作类型
+        operationLog.setOptType(optLog.optType());
+        // 操作描述
+        operationLog.setOptDesc(apiOperation.value());
+        // 获取请求的类名
+        String className = joinPoint.getTarget().getClass().getName();
+        // 获取请求的方法名
+        String methodName = method.getName();
+        methodName = className + "." + methodName;
+        // 请求方式
+        operationLog.setRequestMethod(Objects.requireNonNull(request).getMethod());
+        // 请求方法
+        operationLog.setOptMethod(methodName);
+        // 请求参数
+        operationLog.setRequestParam(JSON.toJSONString(joinPoint.getArgs()));
+        // 返回结果
+        operationLog.setResponseData(JSON.toJSONString(keys));
+        // 请求用户ID
+        // TODO 登录
+        operationLog.setUserId(1);
+        // 请求用户
+        operationLog.setNickname("Link");
+        // 请求IP
+        String ipAddress = IpUtils.getIpAddress(request);
+        operationLog.setIpAddress(ipAddress);
+        operationLog.setIpSource(IpUtils.getIpSource(ipAddress));
+        // 请求URLa
+        operationLog.setOptUrl(request.getRequestURI());
+        operationLogDao.insert(operationLog);
     }
 
 }
