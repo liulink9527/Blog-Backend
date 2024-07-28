@@ -4,10 +4,13 @@ import com.link.blog.common.PageResult;
 import com.link.blog.entity.Article;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.link.blog.model.dto.ArticleUploadDTO;
+import com.link.blog.model.request.ArticleSeoRequest;
 import com.link.blog.model.request.ArticleTopRequest;
 import com.link.blog.model.request.ConditionRequest;
-import com.link.blog.model.request.DeleteRequest;
+import com.link.blog.model.request.ArticleDeleteRequest;
 import com.link.blog.model.vo.ArticleBackVO;
+
+import java.util.List;
 
 /**
  * <p>
@@ -42,5 +45,17 @@ public interface ArticleService extends IService<Article> {
      * 恢复或删除文章
      * @param deleteRequest
      */
-    void updateArticleDelete(DeleteRequest deleteRequest);
+    void updateArticleDelete(ArticleDeleteRequest deleteRequest);
+
+    /**
+     * 物理删除文章
+     * @param articleIdList
+     */
+    void deleteArticles(List<Integer> articleIdList);
+
+    /**
+     * 文章SEO
+     * @param seoRequest
+     */
+    void articleSeo(ArticleSeoRequest seoRequest);
 }

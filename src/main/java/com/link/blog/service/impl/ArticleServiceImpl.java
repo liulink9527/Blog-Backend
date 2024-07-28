@@ -19,9 +19,10 @@ import com.link.blog.exception.BizException;
 import com.link.blog.model.dto.ArticleUploadDTO;
 import com.link.blog.model.dto.FileAttachDTO;
 import com.link.blog.model.dto.WebsiteConfigDTO;
+import com.link.blog.model.request.ArticleSeoRequest;
 import com.link.blog.model.request.ArticleTopRequest;
 import com.link.blog.model.request.ConditionRequest;
-import com.link.blog.model.request.DeleteRequest;
+import com.link.blog.model.request.ArticleDeleteRequest;
 import com.link.blog.model.vo.ArticleBackVO;
 import com.link.blog.service.*;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -131,7 +132,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleDao, Article> impleme
     }
 
     @Override
-    public void updateArticleDelete(DeleteRequest deleteRequest) {
+    public void updateArticleDelete(ArticleDeleteRequest deleteRequest) {
         // 修改文章逻辑删除状态
         List<Article> articleList = deleteRequest.getIdList().stream()
                 .map(id -> Article.builder()
@@ -141,6 +142,19 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleDao, Article> impleme
                         .build())
                 .collect(Collectors.toList());
         this.updateBatchById(articleList);
+    }
+
+    @Override
+    public void deleteArticles(List<Integer> articleIdList) {
+        // 删除文章标签关联
+        articleTagDao.delete(new LambdaQueryWrapper<ArticleTag>().in(ArticleTag::getArticleId, articleIdList));
+        // 删除文章
+        articleDao.deleteBatchIds(articleIdList);
+    }
+
+    @Override
+    public void articleSeo(ArticleSeoRequest seoRequest) {
+
     }
 
     /**

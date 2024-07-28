@@ -11,4 +11,12 @@ public class OptTypeConstant {
      * 修改操作
      */
     public static final String UPDATE = "修改";
+
+
+    /**
+     * 物理删除
+     */
+    public static final String DELETE = "删除";
+
+
 }

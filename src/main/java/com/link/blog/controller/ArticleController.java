@@ -5,9 +5,7 @@ import com.link.blog.common.PageResult;
 import com.link.blog.common.Result;
 import com.link.blog.constant.OptTypeConstant;
 import com.link.blog.context.ArticleImportStrategyContext;
-import com.link.blog.model.request.ArticleTopRequest;
-import com.link.blog.model.request.ConditionRequest;
-import com.link.blog.model.request.DeleteRequest;
+import com.link.blog.model.request.*;
 import com.link.blog.model.vo.ArticleBackVO;
 import com.link.blog.service.ArticleService;
 import io.swagger.annotations.Api;
@@ -17,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.util.List;
 
 
 /**
@@ -40,7 +39,7 @@ public class ArticleController {
         return Result.ok(articleService.listArticleBack(request));
     }
 
-    @ApiOperation(value = "批量导入文章")
+    @ApiOperation(value = "导入文章")
     @PostMapping("/admin/articles/import")
     public Result importArticles(MultipartFile file, @RequestParam(required = false) String type) {
         articleImportStrategyContext.importArticles(file, type);
@@ -58,9 +57,33 @@ public class ArticleController {
     @OptLog(optType = OptTypeConstant.UPDATE)
     @ApiOperation(value = "恢复或删除文章")
     @PutMapping("/admin/articles")
-    public Result updateArticleDelete(@Valid @RequestBody DeleteRequest deleteRequest) {
+    public Result updateArticleDelete(@Valid @RequestBody ArticleDeleteRequest deleteRequest) {
         articleService.updateArticleDelete(deleteRequest);
         return Result.ok();
     }
+
+    @OptLog(optType = OptTypeConstant.DELETE)
+    @ApiOperation(value = "物理删除文章")
+    @DeleteMapping("/admin/articles")
+    public Result deleteArticles(@RequestBody List<Integer> articleIdList) {
+        articleService.deleteArticles(articleIdList);
+        return Result.ok();
+    }
+
+    @ApiOperation(value = "文章SEO")
+    @PostMapping("/admin/articles/baiduSeo")
+    public Result articleSeo(@RequestBody ArticleSeoRequest seoRequest) {
+        articleService.articleSeo(seoRequest);
+        return Result.ok();
+    }
+
+    @ApiOperation(value = "导出文章")
+    @PostMapping("/admin/articles/exports")
+    public Result<List<String>> exportArticles(@RequestBody ArticleExportRequest exportRequest) {
+
+        return Result.ok();
+    }
+
+
 
 }

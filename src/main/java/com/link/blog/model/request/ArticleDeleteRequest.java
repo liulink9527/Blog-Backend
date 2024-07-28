@@ -17,7 +17,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class DeleteRequest {
+public class ArticleDeleteRequest {
 
     /**
      * id列表
