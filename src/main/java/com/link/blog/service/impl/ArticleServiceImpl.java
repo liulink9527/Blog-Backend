@@ -19,10 +19,7 @@ import com.link.blog.exception.BizException;
 import com.link.blog.model.dto.ArticleUploadDTO;
 import com.link.blog.model.dto.FileAttachDTO;
 import com.link.blog.model.dto.WebsiteConfigDTO;
-import com.link.blog.model.request.ArticleSeoRequest;
-import com.link.blog.model.request.ArticleTopRequest;
-import com.link.blog.model.request.ConditionRequest;
-import com.link.blog.model.request.ArticleDeleteRequest;
+import com.link.blog.model.request.*;
 import com.link.blog.model.vo.ArticleBackVO;
 import com.link.blog.service.*;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -32,9 +29,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
@@ -155,6 +150,18 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleDao, Article> impleme
     @Override
     public void articleSeo(ArticleSeoRequest seoRequest) {
 
+    }
+
+    @Override
+    public List<String> exportArticles(ArticleExportRequest exportRequest) {
+        // 查询文章信息
+        List<Article> articleList = articleDao.selectList(new LambdaQueryWrapper<Article>()
+                .select(Article::getArticleTitle, Article::getArticleContent)
+                .in(Article::getId, exportRequest.getArticleIdList()));
+        // 写入文件并上传
+        List<String> urlList = new ArrayList<>();
+
+        return urlList;
     }
 
     /**

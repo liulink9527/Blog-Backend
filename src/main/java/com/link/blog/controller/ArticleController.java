@@ -77,11 +77,10 @@ public class ArticleController {
         return Result.ok();
     }
 
-    @ApiOperation(value = "导出文章")
+    @ApiOperation(value = "批量导出文章")
     @PostMapping("/admin/articles/exports")
     public Result<List<String>> exportArticles(@RequestBody ArticleExportRequest exportRequest) {
-
-        return Result.ok();
+        return Result.ok(articleService.exportArticles(exportRequest));
     }
 
 

@@ -23,6 +23,12 @@ spring:
     host: 127.0.0.1
     port: 6379
 
+# 上传模式
+upload:
+  mode: local
+  local:
+  minio:
+
 
 # 配置MybatisPlus
 mybatis-plus:

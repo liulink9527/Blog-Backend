@@ -35,7 +35,7 @@ public class NormalArticleImportStrategyImpl implements ArticleImportStrategy {
             throw new BizException(StringUtils.format("上传文件为空 file:{}", JSON.toJSONString(file)));
         }
         // 获取文件名作为文章标题
-        String articleTitle = file.getOriginalFilename().split("\\.")[0];
+        String articleTitle = file.getOriginalFilename().substring(0, file.getOriginalFilename().lastIndexOf("."));
         // 获取文章内容
         StringBuilder articleContent = new StringBuilder();
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(file.getInputStream()))) {

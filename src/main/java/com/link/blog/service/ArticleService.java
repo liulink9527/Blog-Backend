@@ -4,10 +4,7 @@ import com.link.blog.common.PageResult;
 import com.link.blog.entity.Article;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.link.blog.model.dto.ArticleUploadDTO;
-import com.link.blog.model.request.ArticleSeoRequest;
-import com.link.blog.model.request.ArticleTopRequest;
-import com.link.blog.model.request.ConditionRequest;
-import com.link.blog.model.request.ArticleDeleteRequest;
+import com.link.blog.model.request.*;
 import com.link.blog.model.vo.ArticleBackVO;
 
 import java.util.List;
@@ -58,4 +55,10 @@ public interface ArticleService extends IService<Article> {
      * @param seoRequest
      */
     void articleSeo(ArticleSeoRequest seoRequest);
+
+    /**
+     * 批量导出文章
+     * @return
+     */
+    List<String> exportArticles(ArticleExportRequest exportRequest);
 }
