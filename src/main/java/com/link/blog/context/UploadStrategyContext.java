@@ -30,7 +30,7 @@ public class UploadStrategyContext {
      * @param path
      * @return
      */
-    public String uploadFile(String fileName, InputStream inputStream, String path) {
+    public String executeUploadFile(String fileName, InputStream inputStream, String path) {
         return uploadStrategyMap.get(UploadModeEnum.getUploadModeEnum(uploadMode)).uploadFile(fileName, inputStream, path);
     }
 

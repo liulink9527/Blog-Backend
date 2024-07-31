@@ -83,6 +83,13 @@ public class ArticleController {
         return Result.ok(articleService.exportArticles(exportRequest));
     }
 
+    @ApiOperation(value = "爬取文章")
+    @GetMapping("/admin/articles/reptile")
+    public Result articleReptile(String url) {
+        articleService.articleReptile(url);
+        return Result.ok();
+    }
+
 
 
 }

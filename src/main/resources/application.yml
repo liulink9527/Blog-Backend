@@ -25,9 +25,13 @@ spring:
 
 # 上传模式
 upload:
-  mode: local
+  mode: minio
   local:
   minio:
+    endpoint: http://10.86.17.141:9000
+    access-key: UCXU48jZhgMCFtssilB8
+    secret-key: P9UlKamMpAaWC0TpbTFyBd3Xm1I6FpzjEwEYociq
+    bucket-name: test
 
 
 # 配置MybatisPlus

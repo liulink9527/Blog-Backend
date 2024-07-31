@@ -35,7 +35,7 @@ public abstract class AbstractUploadStrategyImpl implements UploadStrategy {
             return getFileAccessUrl(newPath);
         } catch (IOException e) {
             log.error(e.getMessage(), e);
-            throw new BizException("文件上传失败");
+            throw new RuntimeException("文件上传失败", e);
         }
     }
 
@@ -46,7 +46,7 @@ public abstract class AbstractUploadStrategyImpl implements UploadStrategy {
             return getFileAccessUrl(path + fileName);
         } catch (IOException e) {
             log.error(e.getMessage(), e);
-            throw new BizException("文件上传失败");
+            throw new RuntimeException("文件上传失败", e);
         }
     }
 

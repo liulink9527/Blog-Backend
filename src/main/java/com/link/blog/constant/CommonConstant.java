@@ -50,4 +50,15 @@ public class CommonConstant {
      */
     public static final Integer DEFAULT_CONFIG_ID = 1;
 
+    /**
+     * 默认分类:其他
+     */
+    public static final Integer OTHER_CATEGORY_ID = 1;
+
+
+    /**
+     * API接口地址
+     */
+    public static final String IMG_API_URL = "https://api.btstu.cn/sjbz/api.php?lx=dongman&format=json";
+
 }

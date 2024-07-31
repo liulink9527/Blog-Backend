@@ -2,19 +2,23 @@ package com.link.blog.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollectionUtil;
+import cn.hutool.core.lang.Assert;
 import com.alibaba.fastjson2.JSON;
+import com.alibaba.fastjson2.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.link.blog.common.PageResult;
 import com.link.blog.constant.CommonConstant;
 import com.link.blog.constant.RedisConstant;
+import com.link.blog.context.UploadStrategyContext;
 import com.link.blog.dao.ArticleTagDao;
 import com.link.blog.dao.CategoryDao;
+import com.link.blog.dao.TagDao;
 import com.link.blog.entity.Article;
 import com.link.blog.dao.ArticleDao;
 import com.link.blog.entity.ArticleTag;
 import com.link.blog.entity.Category;
 import com.link.blog.entity.Tag;
-import com.link.blog.enums.ArticleStatusEnum;
+import com.link.blog.enums.*;
 import com.link.blog.exception.BizException;
 import com.link.blog.model.dto.ArticleUploadDTO;
 import com.link.blog.model.dto.FileAttachDTO;
@@ -25,10 +29,19 @@ import com.link.blog.service.*;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.link.blog.util.PageUtils;
 import com.link.blog.util.StringUtils;
+import com.vladsch.flexmark.html2md.converter.FlexmarkHtmlConverter;
+import com.vladsch.flexmark.util.data.MutableDataSet;
+import lombok.extern.slf4j.Slf4j;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
@@ -41,6 +54,7 @@ import java.util.stream.Collectors;
  * @author Link
  * @since 2024-06-24 08:05:43
  */
+@Slf4j
 @Service
 public class ArticleServiceImpl extends ServiceImpl<ArticleDao, Article> implements ArticleService {
 
@@ -64,6 +78,14 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleDao, Article> impleme
 
     @Autowired
     private ArticleTagDao articleTagDao;
+
+    @Autowired
+    private RestTemplate restTemplate;
+
+    @Autowired
+    private UploadStrategyContext uploadStrategyContext;
+    @Autowired
+    private TagDao tagDao;
 
     @Override
     public PageResult<ArticleBackVO> listArticleBack(ConditionRequest request) {
@@ -160,12 +182,70 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleDao, Article> impleme
                 .in(Article::getId, exportRequest.getArticleIdList()));
         // 写入文件并上传
         List<String> urlList = new ArrayList<>();
-
+        for (Article article : articleList) {
+            try (ByteArrayInputStream inputStream = new ByteArrayInputStream(article.getArticleContent().getBytes())) {
+                String url = uploadStrategyContext.executeUploadFile(article.getArticleTitle() + FileExtEnum.MD.getExtName(), inputStream, FilePathEnum.MD.getPath());
+                urlList.add(url);
+            } catch (Exception e) {
+                log.error(e.getMessage(), e);
+                throw new BizException("导出文章失败");
+            }
+        }
         return urlList;
+    }
+
+    @Override
+    public void articleReptile(String url) {
+        try {
+            Document document = Jsoup.connect(url).get();
+            Elements title = document.getElementsByClass("title-article");
+            Elements tags = document.getElementsByClass("tag-link");
+            Elements content = document.getElementsByClass("article_content");
+            Assert.isTrue(StringUtils.isNotEmpty(content.toString()), BizCodeEnum.CRAWLING_ARTICLE_FAILED.getDesc());
+            // HTML内容转为Markdown格式
+            String newContent = content.get(0).toString().replaceAll("<code>", "<code class=\"lang-java\">");
+            MutableDataSet options = new MutableDataSet();
+            String markdown = FlexmarkHtmlConverter.builder(options).build().convert(newContent).replace("lang-java", "java");
+
+            // 获取随机图片
+            String response = restTemplate.getForObject(CommonConstant.IMG_API_URL, String.class);
+            log.info("获取随机图片成功 res:{}", response);
+            Object imgUrl = JSON.parseObject(response).get("imgurl");
+
+            Article articleReptile = Article.builder().userId(1)
+                    .articleContent(markdown)
+                    .categoryId(CommonConstant.OTHER_CATEGORY_ID)
+                    .type(FileTypeEnum.REPRINT.getType())
+                    .originalUrl(url)
+                    .articleTitle(title.get(0).text())
+                    .articleCover(imgUrl.toString())
+                    .build();
+            articleDao.insert(articleReptile);
+
+            // 为文章添加标签
+            List<Integer> tagsId = new ArrayList<>();
+            tags.forEach(item -> {
+                String tag = item.text();
+                // 数据库是否已存在该标签
+                Tag tagData = tagDao.selectOne(new LambdaQueryWrapper<Tag>().eq(Tag::getTagName, tag));
+                if (Objects.isNull(tagData)) {
+                    tagData = Tag.builder().tagName(tag).build();
+                    tagDao.insert(tagData);
+                }
+                tagsId.add(tagData.getId());
+            });
+            articleTagDao.saveArticleTags(articleReptile.getId(), tagsId);
+
+            log.info("文章抓取成功, 内容为:{}", JSON.toJSONString(articleReptile));
+        } catch (IOException e) {
+            log.error("堆栈:{}", e);
+            throw new BizException("文章抓取失败");
+        }
     }
 
     /**
      * 保存文章标签
+     *
      * @param articleUploadDTO
      * @param articleId
      */

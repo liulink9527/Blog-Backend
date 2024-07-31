@@ -61,4 +61,10 @@ public interface ArticleService extends IService<Article> {
      * @return
      */
     List<String> exportArticles(ArticleExportRequest exportRequest);
+
+    /**
+     * 爬取文章
+     * @param url
+     */
+    void articleReptile(String url);
 }
